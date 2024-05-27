@@ -17,7 +17,7 @@
     var body = document.getElementById("Body")
       if (body.style.backgroundColor.endsWith("#363636")){
         body.style.backgroundColor = "#ffffff";
-      }else{
+      }else if(body.style.backgroundColor.endsWith("#ffffff")) {
         body.style.backgroundColor = "#363636";
       }
     }
