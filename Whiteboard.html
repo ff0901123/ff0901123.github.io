@@ -10,5 +10,16 @@
     }
   </style>
 </head>
-<body>
-  <button id="darkModeToggle">Toggle Dark Mode</button>
+<body id="Body">
+  <button id="darkModeToggle" onclick="func()">Toggle Mode</button>
+  <script>
+    function func(){
+    var body = document.getElementById("Body")
+      if (body.backgroundColor.endsWith("#363636")){
+        body = "#ffffff"
+      }else{
+        body.backgroundColor = "#363636"
+      }
+    }
+  </script>
+</body>
