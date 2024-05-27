@@ -1,6 +1,29 @@
-<!DOCYTPE html>
+<!DOCTYPE html>
 <html>
-  <body>
-    <title>Whiteboard</title>
-  </body>
-</html>
+<head>
+  <title>Whiteboard</title>
+  <style>
+    body {
+      background-color: white;
+      color: black;
+      transition: background-color 0.5s, color 0.5s;
+    }
+
+    body.dark-mode {
+      background-color: #333;
+      color: white;
+    }
+
+    button {
+      font-size: 16px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #333;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <button id="darkModeToggle">Toggle Dark Mode</button>
