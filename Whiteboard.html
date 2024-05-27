@@ -5,20 +5,18 @@
   <style>
     body {
       background-color: white;
-      color: black;
-      transition: background-color 0.5s, color 0.5s;
     }
   </style>
 </head>
 <body id="Body">
-  <button id="darkModeToggle" onclick="func()">Toggle Mode</button>
+  <button onclick="func()">Toggle Mode</button>
   <script>
     function func(){
     var body = document.getElementById("Body")
-      if (body.style.backgroundColor.endsWith("#363636")){
-        body.style.backgroundColor = "#ffffff";
+      if (body.style.backgroundColor.endsWith("white")){
+        body.style.backgroundColor = "black";
       }else{
-        body.style.backgroundColor = "#363636";
+        body.style.backgroundColor = "white";
       }
     }
   </script>
