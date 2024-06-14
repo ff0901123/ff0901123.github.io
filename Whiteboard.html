@@ -13,11 +13,10 @@
   <br><a href="ff0901123.github.io">Home</a>
   <script>
     function func(){
-    var body = document.getElementById("Body")
-      if (body.style.backgroundColor.endsWith("white")){
-        body.style.backgroundColor = "black";
+      if (document.getElementById("Body").style.backgroundColor.endsWith("white")){
+        document.getElementById("Body").style.backgroundColor = "black";
       }else{
-        body.style.backgroundColor = "white";
+        document.getElementById("Body").style.backgroundColor = "white";
       }
     }
   </script>
