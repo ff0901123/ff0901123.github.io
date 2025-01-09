@@ -1,0 +1,21 @@
+body {
+    margin: 0;
+    overflow: hidden; /* Prevents scrollbars */
+    display: flex;
+    flex-direction: column; /* Aligns the controls to top */
+    align-items: center; /* Centers everything horizontally */
+    font-family: sans-serif;
+}
+
+.controls {
+    margin-bottom: 10px; /* Space between controls and canvas */
+}
+
+canvas {
+    border: 2px solid #000; /* Adds a border to the canvas for visibility */
+    cursor: crosshair; /* Changes cursor to crosshair */
+}
+
+input[type="color"] {
+    margin-right: 5px; /* Spacing between color picker and clear button */
+}
