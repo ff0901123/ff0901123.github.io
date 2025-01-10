@@ -5,6 +5,7 @@ const clearButton = document.getElementById('clearButton');
 const backgroundColorButton = document.getElementById('backgroundColorButton');
 const undoButton = document.getElementById('undoButton');
 const redoButton = document.getElementById('redoButton');
+const eraserButton = document.getElementById('eraserButton');
 const body = document.querySelector('body');
 
 let isDrawing = false;
@@ -16,7 +17,7 @@ let historyStep = -1; // current position in the history
 let redoStack = [];
 const maxHistorySize = 20;
 let isBackgroundBlack = false; // Track background color
-
+let isErasing = false; // Track eraser mode
 
 // Set canvas dimensions to fill the viewport
 function setCanvasSize() {
@@ -44,15 +45,19 @@ function saveCanvas() {
 
 function draw(e) {
     if(!isDrawing) return;
-    ctx.strokeStyle = color;
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
     ctx.lineWidth = 5;
 
-    ctx.beginPath();
-    ctx.moveTo(lastX, lastY);
-    ctx.lineTo(e.offsetX, e.offsetY);
-    ctx.stroke();
+    if (isErasing) {
+      ctx.clearRect(e.offsetX - 10, e.offsetY - 10, 20, 20);
+    } else {
+      ctx.strokeStyle = color;
+      ctx.beginPath();
+      ctx.moveTo(lastX, lastY);
+      ctx.lineTo(e.offsetX, e.offsetY);
+      ctx.stroke();
+    }
 
     [lastX, lastY] = [e.offsetX, e.offsetY];
 }
@@ -124,3 +129,7 @@ clearButton.addEventListener('click', clearCanvas);
 backgroundColorButton.addEventListener('click', changeBackgroundColor);
 undoButton.addEventListener('click', undoCanvas);
 redoButton.addEventListener('click', redoCanvas);
+eraserButton.addEventListener('click', () => {
+    isErasing = !isErasing;
+    canvas.style.cursor = isErasing ? 'pointer' : 'crosshair';
+});
