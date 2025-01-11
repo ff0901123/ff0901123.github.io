@@ -5,8 +5,9 @@ const clearButton = document.getElementById('clearButton');
 const backgroundColorButton = document.getElementById('backgroundColorButton');
 const undoButton = document.getElementById('undoButton');
 const redoButton = document.getElementById('redoButton');
-const eraserButton = document.getElementById('eraserButton');
 const body = document.querySelector('body');
+const stockWebsiteButton = document.getElementById('stockWebsiteButton');
+
 
 let isDrawing = false;
 let lastX = 0;
@@ -17,7 +18,6 @@ let historyStep = -1; // current position in the history
 let redoStack = [];
 const maxHistorySize = 20;
 let isBackgroundBlack = false; // Track background color
-let isErasing = false; // Track eraser mode
 
 // Set canvas dimensions to fill the viewport
 function setCanvasSize() {
@@ -45,19 +45,15 @@ function saveCanvas() {
 
 function draw(e) {
     if(!isDrawing) return;
+    ctx.strokeStyle = color;
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
     ctx.lineWidth = 5;
 
-    if (isErasing) {
-      ctx.clearRect(e.offsetX - 10, e.offsetY - 10, 20, 20);
-    } else {
-      ctx.strokeStyle = color;
-      ctx.beginPath();
-      ctx.moveTo(lastX, lastY);
-      ctx.lineTo(e.offsetX, e.offsetY);
-      ctx.stroke();
-    }
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
 
     [lastX, lastY] = [e.offsetX, e.offsetY];
 }
@@ -77,13 +73,13 @@ function changeBackgroundColor() {
 
 function undoCanvas() {
     if (historyStep > 0) {
-      redoStack.push(history[historyStep]);
-      historyStep--;
-      const canvasState = new Image();
-      canvasState.onload = () => {
+        redoStack.push(history[historyStep]); // move current to redo
+        historyStep--;
+        const canvasState = new Image();
+        canvasState.onload = () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(canvasState, 0, 0);
-      };
+        };
       canvasState.src = history[historyStep];
     }
 }
@@ -91,12 +87,12 @@ function undoCanvas() {
 
 function redoCanvas() {
   if (redoStack.length > 0) {
-      historyStep++;
-      if (historyStep < history.length) {
-        history.length = historyStep;
-      }
+        historyStep++;
+        if (historyStep < history.length) {
+          history.length = historyStep;
+        }
       history.push(redoStack.pop());
-      const canvasState = new Image();
+    const canvasState = new Image();
         canvasState.onload = () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(canvasState, 0, 0);
@@ -113,9 +109,7 @@ canvas.addEventListener('mousedown', (e) => {
     [lastX, lastY] = [e.offsetX, e.offsetY];
 });
 
-
 canvas.addEventListener('mousemove', draw);
-
 
 canvas.addEventListener('mouseup', () => {
     isDrawing = false;
@@ -129,7 +123,7 @@ clearButton.addEventListener('click', clearCanvas);
 backgroundColorButton.addEventListener('click', changeBackgroundColor);
 undoButton.addEventListener('click', undoCanvas);
 redoButton.addEventListener('click', redoCanvas);
-eraserButton.addEventListener('click', () => {
-    isErasing = !isErasing;
-    canvas.style.cursor = isErasing ? 'pointer' : 'crosshair';
+
+stockWebsiteButton.addEventListener('click', () => {
+    window.location.href = 'stockwebsite.html'; // Replace with actual path or URL of your stock website
 });
