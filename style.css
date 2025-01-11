@@ -9,6 +9,10 @@ body {
 
 .controls {
     margin-bottom: 10px; /* Space between controls and canvas */
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
 }
 
 canvas {
