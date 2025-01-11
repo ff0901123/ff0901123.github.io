@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Performance & Financial News</title>
+    <link rel="stylesheet" href="style1.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="nav-brand">Finance Hub</a>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Stock Lookup</a></li>
+                <li><a href="#">News</a></li>
+                <li><a href="#">Macro</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section class="stock-lookup">
+            <h2>Stock Lookup</h2>
+            <div class="lookup-form">
+                <input type="text" id="stockSymbol" placeholder="Enter stock symbol or name">
+                <button id="searchButton">Search</button>
+            </div>
+            <div class="stock-performance" id="stockPerformance">
+                </div>
+        </section>
+
+        <section class="financial-news">
+            <h2>Financial News</h2>
+            <div class="news-feed" id="newsFeed">
+                </div>
+        </section>
+
+        <section class="stock-details">
+            <h2>Stock Details</h2>
+            <div class="stock-details-content" id="stockDetails">
+             </div>
+        </section>
+          <section class="macro-indicators">
+            <h2>Macroeconomic Indicators</h2>
+            <div id="macroIndicators">
+            </div>
+        </section>
+    </div>
+
+    <script src="script1.js"></script>
+</body>
+</html>
