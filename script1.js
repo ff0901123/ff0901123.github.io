@@ -5,23 +5,36 @@ document.addEventListener('DOMContentLoaded', function () {
     const newsFeed = document.getElementById('newsFeed');
     const stockDetails = document.getElementById('stockDetails');
     const macroIndicators = document.getElementById('macroIndicators');
+    const apiKey = "YOUR_NEWS_API_KEY"; // Replace with your actual NewsAPI key
 
     searchButton.addEventListener('click', function() {
         const stockSymbol = document.getElementById('stockSymbol').value;
-      if (stockSymbol) {
-          stockPerformance.innerHTML = generateStockPerformance(stockSymbol);
+        if (stockSymbol) {
+          fetchStockData(stockSymbol)
+              .then(data => {
+                stockPerformance.innerHTML = generateStockPerformance(data);
+              })
+               .catch(error => {
+                  stockPerformance.innerHTML = `<p>Error fetching data: ${error.message}</p>`;
+              });
         } else {
-           stockPerformance.innerHTML = '<p> Please enter a stock symbol </p>';
+          stockPerformance.innerHTML = '<p> Please enter a stock symbol </p>';
         }
     });
 
-    newsFeed.innerHTML = generateNewsFeed();
+    fetchNews()
+        .then(data => {
+           newsFeed.innerHTML = generateNewsFeed(data);
+        })
+        .catch(error => {
+              newsFeed.innerHTML = `<p>Error fetching data: ${error.message}</p>`;
+        });
+
     stockDetails.innerHTML = generateStockDetails();
     macroIndicators.innerHTML = generateMacroIndicators();
 
-   function generateStockPerformance(stockSymbol) {
     const dummyData = {
-      "AAPL": {
+       "AAPL": {
         "currentPrice": 175.00,
         "openPrice": 170.00,
         "closePrice": 174.00,
@@ -47,8 +60,19 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
     };
-      const data = dummyData[stockSymbol.toUpperCase()]
-        if (data) {
+      function fetchStockData(stockSymbol) {
+          return new Promise((resolve, reject) => {
+           const data = dummyData[stockSymbol.toUpperCase()]
+             if (data) {
+              resolve(data);
+             } else {
+              reject(new Error('Stock not found'))
+            }
+          })
+      }
+
+      function generateStockPerformance(data) {
+       if (data) {
         return `
                 <table>
                     <thead>
@@ -88,30 +112,38 @@ document.addEventListener('DOMContentLoaded', function () {
           } else {
               return '<p> Stock not found </p>'
           }
+      }
+
+    function fetchNews() {
+      const url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=${apiKey}`;
+
+      return fetch(url)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+              return response.json();
+            })
+            .then(data => data.articles)
     }
 
-    function generateNewsFeed() {
-        const dummyNews = [
-            {
-                title: "Tech Stocks Surge on Positive Earnings",
-                summary: "Major tech companies reported higher-than-expected earnings, leading to a market rally."
-            },
-            {
-                title: "Inflation Concerns Rise as CPI Jumps",
-                summary: "Consumer Price Index data showed a significant increase, raising concerns about potential rate hikes."
-            },
-           {
-                title: "Global Supply Chain Disruptions Impact Manufacturing Sector",
-                summary: "Ongoing supply chain issues continue to affect production and delivery times for several manufacturers."
+    function generateNewsFeed(articles) {
+          if (!articles || articles.length === 0) {
+                return '<p> No news available </p>';
             }
-        ];
-
-        let newsHTML = '<ul>';
-        dummyNews.forEach(article => {
-            newsHTML += `<li><h3>${article.title}</h3><p>${article.summary}</p></li>`;
-        });
-        newsHTML += '</ul>';
-        return newsHTML;
+           let newsHTML = '<ul>';
+          articles.forEach(article => {
+              newsHTML += `
+                <li>
+                    <a href="${article.url}" target="_blank">
+                       <h3>${article.title}</h3>
+                    </a>
+                    <p>${article.description || ''}</p>
+                 </li>
+               `;
+          });
+          newsHTML += '</ul>';
+          return newsHTML;
     }
 
     function generateStockDetails() {
@@ -134,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function () {
           gdpGrowth: '2.5%',
           inflation: '4.2%',
           interestRate: '5.25%',
-            oilPrice: '$75 per barrel',
+           oilPrice: '$75 per barrel',
              goldPrice: '$2000 per ounce'
         };
 
